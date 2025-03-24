@@ -2,7 +2,7 @@ v:1.0
 ---
 field with spaces
 field,with,commas
-fieldwithtabs
+field	with	tabs
 
 field"with"quotes
 field'with'quotes

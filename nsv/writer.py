@@ -16,7 +16,7 @@ class Writer:
         self._file_obj.write(f'\n{Writer.META_SEPARATOR}\n')
 
     def write_elem(self, elem):
-        chunk = ''.join(f'{line}\n' if line else '\\\n' for line in elem)
+        chunk = ''.join(f'{line}\n' if line else '\\\n' for line in elem) if elem else '\n'
         self._file_obj.write(chunk)
         self._file_obj.write('\n')
 

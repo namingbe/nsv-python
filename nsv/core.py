@@ -12,13 +12,13 @@ def loads(string):
     """Load NSV data from a string."""
     return load(StringIO(string))
 
-def dump(elems, file_obj, metadata=None):
+def dump(data, file_obj, version='1.0', metadata=()):
     """Write elements to an NSV file."""
-    w = Writer(file_obj, '1.0', metadata)
-    w.write_elems(elems)
+    w = Writer(file_obj, version, metadata)
+    w.write_elems(data)
 
-def dumps(elems, metadata=None):
+def dumps(data, version='1.0', metadata=()):
     """Write elements to an NSV string."""
     output = StringIO()
-    dump(elems, output, metadata)
+    dump(data, output, version, metadata)
     return output.getvalue()
