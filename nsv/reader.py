@@ -42,7 +42,7 @@ class Reader:
             if line == '\\\n':
                 acc.append('')
             else:
-                acc.append(line[:-1])
+                acc.append(line[:-1])  # bruh
         if acc:
             return acc
         raise StopIteration
