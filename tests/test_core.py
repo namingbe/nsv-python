@@ -27,7 +27,7 @@ def load_then_dump(s):
 class TestLoad(unittest.TestCase):
     def test_basic_load_file(self):
         """Test loading basic NSV data from file."""
-        file_path = os.path.join(SAMPLES_DIR, 'nsv')
+        file_path = os.path.join(SAMPLES_DIR, 'basic.nsv')
         with open(file_path, 'r') as f:
             rows = nsv.load(f)
 

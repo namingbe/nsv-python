@@ -15,8 +15,7 @@ class Reader:
                 break
             if line == 'v:1.0\n':
                 self.version = '1.0'
-            else:
-                self.metadata.append(line[:-1])
+            self.metadata.append(line[:-1])
         else:
             raise ValueError("Invalid NSV: End of input encountered before end of header")
 
@@ -31,18 +30,19 @@ class Reader:
         for line in self._file_obj:
             self._line += 1
             if line == '\n':
-                if acc:
+                if acc:  # end of row
                     return acc
-                else:
+                else:  # maybe empty row
                     self._line += 1
-                    if next(self._file_obj) == '\n':
+                    if next(self._file_obj) == '\n':  # definitely empty row
                         return []
                     else:
                         raise ValueError(f"Invalid NSV: Unexpected newline at line {self._line}")
-            if line == '\\\n':
+            if line == '\\\n':  # empty cell
                 acc.append('')
-            else:
+            else:  # non-empty cell
                 acc.append(line[:-1])  # bruh
+        # at the end of file
         if acc:
             return acc
         raise StopIteration
