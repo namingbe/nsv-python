@@ -44,3 +44,7 @@ with open('output.nsv', 'w') as f:
 cd tests
 python -m unittest
 ```
+
+Must cover
+- `loads(s)` vs `load(StringIO(s))` parity
+- `dumps(data)` vs `dump(data, StringIO()).getvalue()` parity

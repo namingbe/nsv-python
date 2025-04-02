@@ -16,10 +16,17 @@ class Writer:
         self._file_obj.write(f'\n{Writer.META_SEPARATOR}\n')
 
     def write_elem(self, elem):
-        chunk = ''.join(f'{line}\n' if line else '\\\n' for line in elem) if elem else '\n'
-        self._file_obj.write(chunk)
+        if elem != '':
+            chunk = ''.join(f'{Writer.escape(str(line))}\n' if line else '\\\n' for line in elem)
+            self._file_obj.write(chunk)
+        else:
+            self._file_obj.write('\n')
         self._file_obj.write('\n')
 
     def write_elems(self, elems):
         for elem in elems:
             self.write_elem(elem)
+
+    @staticmethod
+    def escape(s):
+        return s.replace("\\", "\\\\").replace("\n", "\\n")  # i know
