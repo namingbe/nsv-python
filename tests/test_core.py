@@ -23,8 +23,30 @@ def dump_then_load(data):
 def load_then_dump(s):
     return nsv.dumps(nsv.loads(s))
 
+def load_sample(name):
+    file_path = os.path.join(SAMPLES_DIR, f'{name}.nsv')
+    with open(file_path, 'r') as f:
+        rows = nsv.load(f)
+    return rows
+
+def loads_sample(name):
+    file_path = os.path.join(SAMPLES_DIR, f'{name}.nsv')
+    with open(file_path, 'r') as f:
+        _, rows = nsv.loads(f.read())
+    return rows
+
 
 class TestLoad(unittest.TestCase):
+    def test_load(self):
+        for name, data in SAMPLES_DATA.items():
+            rows = load_sample(name)
+            self.assertEqual(data, rows, msg=name)
+
+    def test_loads(self):
+        for name, data in SAMPLES_DATA.items():
+            rows = loads_sample(name)
+            self.assertEqual(data, rows, msg=name)
+
     def test_basic_load_file(self):
         """Test loading basic NSV data from file."""
         file_path = os.path.join(SAMPLES_DIR, 'basic.nsv')

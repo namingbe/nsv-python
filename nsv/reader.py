@@ -56,4 +56,6 @@ class Reader:
 
     @staticmethod
     def unescape(s):
+        if s == '\\':
+            return ''
         return s.replace("\\n", "\n").replace("\\\\", "\\")  # i know

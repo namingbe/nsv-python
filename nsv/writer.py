@@ -29,4 +29,6 @@ class Writer:
 
     @staticmethod
     def escape(s):
+        if s == '':
+            return '\\'
         return s.replace("\\", "\\\\").replace("\n", "\\n")  # i know

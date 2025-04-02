@@ -19,9 +19,11 @@ def loads(s):
         raise ValueError("Invalid NSV: Missing version information")
     data = []
     for row in body.split('\n\n'):
-        data.append([])
+        acc = []
         for cell in row.split('\n'):
-            data[-1].append(Reader.unescape(cell))
+            if cell:  # split can leave a trailing empty one
+                acc.append(Reader.unescape(cell))
+        data.append(acc)
     return metadata, data
 
 def dump(data, file_obj, version='1.0', metadata=()):
