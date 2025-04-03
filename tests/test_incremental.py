@@ -4,7 +4,6 @@ import tempfile
 import nsv
 from test_utils import SAMPLES_DIR
 
-
 class TestIncrementalProcessing(unittest.TestCase):
     def test_incremental_reading(self):
         """Test reading elements incrementally."""

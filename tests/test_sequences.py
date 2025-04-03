@@ -3,7 +3,6 @@ import os
 import nsv
 from test_utils import SAMPLES_DIR, SAMPLES_DATA
 
-
 class TestEdgeSequences(unittest.TestCase):
     def test_empty_sequence_start(self):
         """Test handling of empty sequence at start."""

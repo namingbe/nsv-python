@@ -3,7 +3,6 @@ import os
 import nsv
 from test_utils import SAMPLES_DIR, SAMPLES_DATA, dump_then_load
 
-
 class TestEdgeCases(unittest.TestCase):
     def test_empty_data(self):
         """Test handling of empty data."""

@@ -1,5 +1,6 @@
 # This file contains the original tests before reorganization.
 # It's kept as a reference but is not active in the test suite.
+# To prevent these tests from being run, this file doesn't start with "test_"
 
 import tempfile
 import unittest
@@ -41,7 +42,7 @@ def loads_sample(name):
     return rows
 
 
-class OldTestLoad(unittest.TestCase):
+class TestLoad(unittest.TestCase):
     def test_load(self):
         for name, data in SAMPLES_DATA.items():
             rows = load_sample(name)
@@ -108,7 +109,7 @@ class OldTestLoad(unittest.TestCase):
                 nsv.load(f)
 
 
-class OldTestDump(unittest.TestCase):
+class TestDump(unittest.TestCase):
     def test_basic_dump(self):
         """Test dumping basic NSV data."""
         rows = SAMPLES_DATA['basic']
@@ -150,7 +151,7 @@ class OldTestDump(unittest.TestCase):
         self.assertEqual(parsed_rows, rows)
 
 
-class OldTestEdgeCases(unittest.TestCase):
+class TestEdgeCases(unittest.TestCase):
     def test_empty_data(self):
         """Test handling of empty data."""
         data = []
@@ -184,7 +185,7 @@ class OldTestEdgeCases(unittest.TestCase):
         self.assertEqual([["1", "2", "3"], ["4.5", "6.7", "8.9"]], actual)
 
 
-class OldTestEdgeSequences(unittest.TestCase):
+class TestEdgeSequences(unittest.TestCase):
     def test_empty_sequence_start(self):
         """Test handling of empty sequence at start."""
         file_path = os.path.join(SAMPLES_DIR, 'empty_sequence_start.nsv')
@@ -225,7 +226,7 @@ class OldTestEdgeSequences(unittest.TestCase):
                 nsv.load(f)
 
 
-class OldTestIncrementalProcessing(unittest.TestCase):
+class TestIncrementalProcessing(unittest.TestCase):
     def test_incremental_reading(self):
         """Test reading elements incrementally."""
         file_path = os.path.join(SAMPLES_DIR, 'incremental.nsv')
@@ -262,7 +263,7 @@ class OldTestIncrementalProcessing(unittest.TestCase):
             self.assertEqual(data, actual)
 
 
-class OldTestMultilineAndTrailingNewlines(unittest.TestCase):
+class TestMultilineAndTrailingNewlines(unittest.TestCase):
     def test_multiline_encoded(self):
         """Test reading data with encoded newlines."""
         file_path = os.path.join(SAMPLES_DIR, 'multiline_encoded.nsv')
@@ -313,7 +314,3 @@ class OldTestMultilineAndTrailingNewlines(unittest.TestCase):
                 content = f.read()
                 self.assertIn("line1\\nline2", content)
                 self.assertIn("value2\\nvalue2continued", content)
-
-
-# Note: These tests are disabled by prefixing class names with 'Old'
-# Use the new test files instead.

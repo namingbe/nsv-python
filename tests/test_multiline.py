@@ -5,7 +5,6 @@ import nsv
 from io import StringIO
 from test_utils import SAMPLES_DIR, SAMPLES_DATA
 
-
 class TestMultilineAndTrailingNewlines(unittest.TestCase):
     def test_multiline_encoded(self):
         """Test reading data with encoded newlines."""

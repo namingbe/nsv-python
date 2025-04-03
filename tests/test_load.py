@@ -3,7 +3,6 @@ import os
 import nsv
 from test_utils import SAMPLES_DIR, SAMPLES_DATA, load_sample, loads_sample
 
-
 class TestLoad(unittest.TestCase):
     def test_load(self):
         for name, data in SAMPLES_DATA.items():

@@ -5,7 +5,6 @@ import nsv
 from io import StringIO
 from test_utils import SAMPLES_DATA, dump_then_load
 
-
 class TestDump(unittest.TestCase):
     def test_basic_dump(self):
         """Test dumping basic NSV data."""
