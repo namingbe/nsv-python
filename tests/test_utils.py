@@ -1,4 +1,7 @@
 import os
+import tempfile
+import time
+
 import nsv
 from io import StringIO
 
@@ -19,7 +22,7 @@ def dump_then_load(data):
 
 
 def load_then_dump(s):
-    return nsv.dumps(nsv.loads(s))
+    return nsv.dumps(*nsv.loads(s))
 
 
 def load_sample(name):
@@ -34,3 +37,19 @@ def loads_sample(name):
     with open(file_path, 'r') as f:
         _, rows = nsv.loads(f.read())
     return rows
+
+def dump_sample(name):
+    rows = SAMPLES_DATA[name]
+    with tempfile.TemporaryDirectory() as output_dir:
+        output_path = os.path.join(output_dir, f'output_{name}.nsv')
+        with open(output_path, 'w') as f:
+            nsv.dump(rows, f)
+        with open(output_path, 'r') as f:
+            s = f.read()
+        # print(output_dir)
+        # time.sleep(100)
+    return s
+
+def dumps_sample(name):
+    rows = SAMPLES_DATA[name]
+    return nsv.dumps(rows)

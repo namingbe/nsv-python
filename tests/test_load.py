@@ -27,7 +27,7 @@ class TestLoad(unittest.TestCase):
         file_path = os.path.join(SAMPLES_DIR, 'basic.nsv')
         with open(file_path, 'r') as f:
             data = f.read()
-        rows = nsv.loads(data)
+        meta, rows = nsv.loads(data)
 
         self.assertEqual(SAMPLES_DATA['basic'], rows)
 

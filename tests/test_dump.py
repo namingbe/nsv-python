@@ -3,15 +3,33 @@ import tempfile
 import os
 import nsv
 from io import StringIO
-from test_utils import SAMPLES_DATA, dump_then_load
+from test_utils import SAMPLES_DATA, dump_then_load, dump_sample, dumps_sample, SAMPLES_DIR
+
 
 class TestDump(unittest.TestCase):
+    def test_dump(self):
+        for name, data in SAMPLES_DATA.items():
+            actual = dump_sample(name)
+            file_path = os.path.join(SAMPLES_DIR, f'{name}.nsv')
+            with open(file_path, 'r') as f:
+                expected = f.read()
+            self.assertEqual(expected, actual, msg=name)
+
+    def test_dumps(self):
+        for name, data in SAMPLES_DATA.items():
+            actual = dumps_sample(name)
+            file_path = os.path.join(SAMPLES_DIR, f'{name}.nsv')
+            with open(file_path, 'r') as f:
+                expected = f.read()
+            self.assertEqual(expected, actual, msg=name)
+
+
     def test_basic_dump(self):
         """Test dumping basic NSV data."""
         rows = SAMPLES_DATA['basic']
 
         # Test dumps (to string)
-        self.assertEqual(dump_then_load(rows), rows)
+        self.assertEqual(dump_then_load(rows)[1], rows)
 
         # Test dump (to file)
         with tempfile.TemporaryDirectory() as output_dir:

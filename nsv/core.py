@@ -29,14 +29,14 @@ def loads(s):
 def dump(data, file_obj, version='1.0', metadata=()):
     """Write elements to an NSV file."""
     w = Writer(file_obj, version, metadata)
-    w.write_elems(data)
+    w.write_rows(data)
     return file_obj
 
 def dumps(data, metadata=('v:1.0',)):
     """Write elements to an NSV string."""
     header = '\n'.join(metadata)
     body = '\n\n'.join('\n'.join(map(Writer.escape, row)) for row in data)
-    return f'{header}{META_SEPARATOR}{body}'
+    return f'{header}{META_SEPARATOR}{body}\n'
 
 # todo: do properly, make interface clean
 def prepare_metadata(raw=(), version='1.0'):
