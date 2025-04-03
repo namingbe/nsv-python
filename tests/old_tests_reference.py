@@ -1,3 +1,6 @@
+# This file contains the original tests before reorganization.
+# It's kept as a reference but is not active in the test suite.
+
 import tempfile
 import unittest
 import os
@@ -23,11 +26,13 @@ def dump_then_load(data):
 def load_then_dump(s):
     return nsv.dumps(nsv.loads(s))
 
+
 def load_sample(name):
     file_path = os.path.join(SAMPLES_DIR, f'{name}.nsv')
     with open(file_path, 'r') as f:
         rows = nsv.load(f)
     return rows
+
 
 def loads_sample(name):
     file_path = os.path.join(SAMPLES_DIR, f'{name}.nsv')
@@ -36,7 +41,7 @@ def loads_sample(name):
     return rows
 
 
-class TestLoad(unittest.TestCase):
+class OldTestLoad(unittest.TestCase):
     def test_load(self):
         for name, data in SAMPLES_DATA.items():
             rows = load_sample(name)
@@ -103,7 +108,7 @@ class TestLoad(unittest.TestCase):
                 nsv.load(f)
 
 
-class TestDump(unittest.TestCase):
+class OldTestDump(unittest.TestCase):
     def test_basic_dump(self):
         """Test dumping basic NSV data."""
         rows = SAMPLES_DATA['basic']
@@ -117,7 +122,9 @@ class TestDump(unittest.TestCase):
             with open(output_path, 'w') as f:
                 nsv.dump(rows, f)
             with open(output_path, 'r') as f:
-                loaded_rows = nsv.load(f)
+                s = f.read()
+                print(s)
+                loaded_rows = nsv.loads(s)
             self.assertEqual(loaded_rows, rows)
 
     def test_empty_field_dump(self):
@@ -137,13 +144,13 @@ class TestDump(unittest.TestCase):
 
         reader = nsv.Reader(StringIO(nsv_string))
         self.assertEqual('1.0', reader.version)
-        self.assertEqual(metadata, reader.metadata)
+        self.assertEqual(['v:1.0'] + metadata, reader.metadata)
 
         parsed_rows = nsv.loads(nsv_string)
         self.assertEqual(parsed_rows, rows)
 
 
-class TestEdgeCases(unittest.TestCase):
+class OldTestEdgeCases(unittest.TestCase):
     def test_empty_data(self):
         """Test handling of empty data."""
         data = []
@@ -177,7 +184,7 @@ class TestEdgeCases(unittest.TestCase):
         self.assertEqual([["1", "2", "3"], ["4.5", "6.7", "8.9"]], actual)
 
 
-class TestEdgeSequences(unittest.TestCase):
+class OldTestEdgeSequences(unittest.TestCase):
     def test_empty_sequence_start(self):
         """Test handling of empty sequence at start."""
         file_path = os.path.join(SAMPLES_DIR, 'empty_sequence_start.nsv')
@@ -218,7 +225,7 @@ class TestEdgeSequences(unittest.TestCase):
                 nsv.load(f)
 
 
-class TestIncrementalProcessing(unittest.TestCase):
+class OldTestIncrementalProcessing(unittest.TestCase):
     def test_incremental_reading(self):
         """Test reading elements incrementally."""
         file_path = os.path.join(SAMPLES_DIR, 'incremental.nsv')
@@ -255,5 +262,58 @@ class TestIncrementalProcessing(unittest.TestCase):
             self.assertEqual(data, actual)
 
 
-if __name__ == '__main__':
-    unittest.main()
+class OldTestMultilineAndTrailingNewlines(unittest.TestCase):
+    def test_multiline_encoded(self):
+        """Test reading data with encoded newlines."""
+        file_path = os.path.join(SAMPLES_DIR, 'multiline_encoded.nsv')
+        with open(file_path, 'r') as f:
+            rows = nsv.load(f)
+
+        self.assertEqual([["line1\nline2", "field2", "field3"], ["anotherline1\nline2\nline3", "value2", "value3"]], rows)
+
+        # Test round-trip works correctly
+        output = StringIO()
+        nsv.dump(rows, output)
+        output.seek(0)
+        round_trip_rows = nsv.load(output)
+        self.assertEqual(rows, round_trip_rows)
+
+    def test_trailing_newline(self):
+        """Test file with trailing newline."""
+        file_path = os.path.join(SAMPLES_DIR, 'trailing_newline.nsv')
+        with open(file_path, 'r') as f:
+            rows = nsv.load(f)
+
+        self.assertEqual(SAMPLES_DATA['basic'] + [[]], rows)
+
+    def test_no_trailing_newline(self):
+        """Test file without trailing newline."""
+        file_path = os.path.join(SAMPLES_DIR, 'no_trailing_newline.nsv')
+        with open(file_path, 'r') as f:
+            rows = nsv.load(f)
+
+        self.assertEqual(SAMPLES_DATA['basic'], rows)
+
+    def test_multiline_roundtrip(self):
+        """Test writing and reading data with encoded newlines."""
+        data = [
+            ["line1\nline2", "field2"],
+            ["value1", "value2\nvalue2continued"]
+        ]
+
+        with tempfile.TemporaryDirectory() as output_dir:
+            file_path = os.path.join(output_dir, 'multiline_test.nsv')
+            with open(file_path, 'w') as f:
+                nsv.dump(data, f)
+            with open(file_path, 'r') as f:
+                rows = nsv.load(f)
+            self.assertEqual(data, rows)
+
+            with open(file_path, 'r') as f:
+                content = f.read()
+                self.assertIn("line1\\nline2", content)
+                self.assertIn("value2\\nvalue2continued", content)
+
+
+# Note: These tests are disabled by prefixing class names with 'Old'
+# Use the new test files instead.
