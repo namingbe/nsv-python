@@ -4,7 +4,7 @@ from .writer import Writer
 def load(file_obj):
     """Load NSV data from a file-like object."""
     r = Reader(file_obj)
-    return list(r)
+    return r.metadata, list(r)
 
 def loads(s):
     """Load NSV data from a string."""

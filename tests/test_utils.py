@@ -7,13 +7,13 @@ from io import StringIO
 
 SAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'samples')
 SAMPLES_DATA = {
-    'basic': ((), [["r1c1", "r1c2", "r1c3"], ["r2c1", "r2c2", "r2c3"]]),
-    'empty_fields': ((), [["r1c1", "", "r1c3"], ["r2c1", "", "r2c3"]]),
-    'empty_sequence': ((), [["r1c1", "r1c2"], [], ["r3c1", "r3c2"]]),
-    'empty_sequence_end': ((), [["r1c1", "r1c2"], ["r2c1", "r2c2"], []]),
-    'comments': (("v:1.0", "# This is a comment", "// Another comment" ,"-- And another"), [["r1c1", "r1c2"], ["r2c1", "r2c2"]]),
+    'basic': (["v:1.0"], [["r1c1", "r1c2", "r1c3"], ["r2c1", "r2c2", "r2c3"]]),
+    'comments': (["v:1.0", "# This is a comment", "// Another comment" ,"-- And another"], [["r1c1", "r1c2"], ["r2c1", "r2c2"]]),
+    'empty_fields': (["v:1.0"], [["r1c1", "", "r1c3"], ["r2c1", "", "r2c3"]]),
+    'empty_sequence': (["v:1.0"], [["r1c1", "r1c2"], [], ["r3c1", "r3c2"]]),
+    'empty_sequence_end': (["v:1.0"], [["r1c1", "r1c2"], ["r2c1", "r2c2"], []]),
     'special_chars': (
-        (),
+        ["v:1.0"],
         [["field with spaces", "field,with,commas", "field\twith\ttabs"],
          ["field\"with\"quotes", "field'with'quotes", "field\\with\\backslashes"],
          ["field\nwith\nnewlines", "field, just field"]]
@@ -32,15 +32,15 @@ def load_then_dump(s):
 def load_sample(name):
     file_path = os.path.join(SAMPLES_DIR, f'{name}.nsv')
     with open(file_path, 'r') as f:
-        rows = nsv.load(f)
-    return rows
+        metadata, data = nsv.load(f)
+    return metadata, data
 
 
 def loads_sample(name):
     file_path = os.path.join(SAMPLES_DIR, f'{name}.nsv')
     with open(file_path, 'r') as f:
-        _, rows = nsv.loads(f.read())
-    return rows
+        metadata, data = nsv.loads(f.read())
+    return metadata, data
 
 def dump_sample(name):
     metadata, data = SAMPLES_DATA[name]
