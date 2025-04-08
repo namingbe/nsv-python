@@ -12,6 +12,7 @@ SAMPLES_DATA = {
     'empty_fields': (["v:1.0"], [["r1c1", "", "r1c3"], ["r2c1", "", "r2c3"]]),
     'empty_sequence': (["v:1.0"], [["r1c1", "r1c2"], [], ["r3c1", "r3c2"]]),
     'empty_sequence_end': (["v:1.0"], [["r1c1", "r1c2"], ["r2c1", "r2c2"], []]),
+    'empty_sequence_start': (["v:1.0"], [[], ["r2c1", "r2c2"], ["r3c1", "r3c2"]]),
     'special_chars': (
         ["v:1.0"],
         [["field with spaces", "field,with,commas", "field\twith\ttabs"],

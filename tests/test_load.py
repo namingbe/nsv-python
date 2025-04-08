@@ -32,6 +32,11 @@ class TestLoad(unittest.TestCase):
             with self.assertRaises(ValueError):
                 nsv.load(f)
 
+    def test_extra_newline_after_separator(self):
+        file_path = os.path.join(SAMPLES_DIR, 'extra_newline_after_separator.nsv')
+        with open(file_path, 'r') as f:
+            with self.assertRaises(ValueError):
+                nsv.load(f)
 
 if __name__ == '__main__':
     unittest.main()
