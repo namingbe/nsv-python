@@ -26,15 +26,15 @@ def loads(s):
         data.append(acc)
     return metadata, data
 
-def dump(data, file_obj, version='1.0', metadata=()):
+def dump(data, file_obj, metadata=None):
     """Write elements to an NSV file."""
-    w = Writer(file_obj, version, metadata)
+    w = Writer(file_obj, metadata)
     w.write_rows(data)
     return file_obj
 
-def dumps(data, metadata=('v:1.0',)):
+def dumps(data, metadata=None):
     """Write elements to an NSV string."""
-    header = '\n'.join(metadata)
+    header = '\n'.join(metadata or ('v:1.0',))
     body = '\n\n'.join('\n'.join(map(Writer.escape, row)) for row in data)
     return f'{header}{META_SEPARATOR}{body}\n'
 

@@ -7,13 +7,17 @@ from io import StringIO
 
 SAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'samples')
 SAMPLES_DATA = {
-    'basic': [["field1", "field2", "field3"], ["value1", "value2", "value3"]],
-    'empty_fields': [["field1", "", "field3"], ["value1", "", "value3"]],
-    'empty_sequence': [["field1", "field2"], [], ["value1", "value2"]],
-    'empty_sequence_end': [["field1", "field2"], ["value1", "value2"], []],
-    'comments': [["field1", "field2"], ["value1", "value2"]],
-    'special_chars': [["field with spaces", "field,with,commas", "field\twith\ttabs"],
-                      ["field\"with\"quotes", "field'with'quotes", "field\\with\\backslashes"]],
+    'basic': ((), [["r1c1", "r1c2", "r1c3"], ["r2c1", "r2c2", "r2c3"]]),
+    'empty_fields': ((), [["r1c1", "", "r1c3"], ["r2c1", "", "r2c3"]]),
+    'empty_sequence': ((), [["r1c1", "r1c2"], [], ["r3c1", "r3c2"]]),
+    'empty_sequence_end': ((), [["r1c1", "r1c2"], ["r2c1", "r2c2"], []]),
+    'comments': (("v:1.0", "# This is a comment", "// Another comment" ,"-- And another"), [["r1c1", "r1c2"], ["r2c1", "r2c2"]]),
+    'special_chars': (
+        (),
+        [["field with spaces", "field,with,commas", "field\twith\ttabs"],
+         ["field\"with\"quotes", "field'with'quotes", "field\\with\\backslashes"],
+         ["field\nwith\nnewlines", "field, just field"]]
+    ),
 }
 
 
@@ -39,17 +43,18 @@ def loads_sample(name):
     return rows
 
 def dump_sample(name):
-    rows = SAMPLES_DATA[name]
+    metadata, data = SAMPLES_DATA[name]
     with tempfile.TemporaryDirectory() as output_dir:
         output_path = os.path.join(output_dir, f'output_{name}.nsv')
         with open(output_path, 'w') as f:
-            nsv.dump(rows, f)
+            if metadata:
+                nsv.dump(data, f, metadata=metadata)
+            else:
+                nsv.dump(data, f)
         with open(output_path, 'r') as f:
             s = f.read()
-        # print(output_dir)
-        # time.sleep(100)
     return s
 
 def dumps_sample(name):
-    rows = SAMPLES_DATA[name]
-    return nsv.dumps(rows)
+    metadata, data = SAMPLES_DATA[name]
+    return nsv.dumps(data, metadata)

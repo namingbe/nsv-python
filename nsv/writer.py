@@ -1,18 +1,19 @@
 class Writer:
     META_SEPARATOR = '---'
 
-    def __init__(self, file_obj, version='1.0', metadata=()):
+    def __init__(self, file_obj, metadata=None):
         self._file_obj = file_obj
-        self.version = version
-        self.metadata = metadata
+        self.metadata = metadata if metadata else ('v:1.0',)
+        for line in self.metadata:
+            if line == 'v:1.0':
+                self.version = '1.0'
+                break
+        else:
+            raise ValueError("Version number not found in metadata")
         self._write_header()
         self._at_start = True
 
     def _write_header(self):
-        if self.version == '1.0':
-            self._file_obj.write("v:1.0\n")
-        else:
-            raise ValueError("Invalid version number")
         for line in self.metadata:
             self._file_obj.write(f'{line}\n')
         self._file_obj.write(f'{Writer.META_SEPARATOR}\n')
