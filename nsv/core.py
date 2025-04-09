@@ -8,7 +8,7 @@ def load(file_obj):
 
 def loads(s):
     """Load NSV data from a string."""
-    header, body = s.split(META_SEPARATOR, 1)  # will raise ValueError here if no separator
+    header, body = s.split(f'\n{META_SEPARATOR}\n', 1)  # will raise ValueError here if no separator
     version = None
     metadata = []
     for line in header.split('\n'):
@@ -18,13 +18,13 @@ def loads(s):
     if version is None:
         raise ValueError("Invalid NSV: Missing version information")
     data = []
-    if body:
-        for row in body.split('\n\n'):
-            acc = []
-            for cell in row.split('\n'):
-                if cell:  # split can leave a trailing empty one
-                    acc.append(Reader.unescape(cell))
+    acc = []
+    for i, line in enumerate(body.split('\n')[:-1]):
+        if line:
+            acc.append(Reader.unescape(line))
+        else:
             data.append(acc)
+            acc = []
     return metadata, data
 
 def dump(data, file_obj, metadata=None):
@@ -35,12 +35,11 @@ def dump(data, file_obj, metadata=None):
 
 def dumps(data, metadata=None):
     """Write elements to an NSV string."""
-    header = '\n'.join(metadata or ('v:1.0',))
-    body = '\n\n'.join('\n'.join(map(Writer.escape, row)) for row in data)
-    return f'{header}{META_SEPARATOR}{body}\n'
+    lines = [*(metadata or ('v:1.0',)), META_SEPARATOR]
+    for i, row in enumerate(data):
+        for cell in row:
+            lines.append(Writer.escape(cell))
+        lines.append('')
+    return '\n'.join(lines) + '\n'
 
-# todo: do properly, make interface clean
-def prepare_metadata(raw=(), version='1.0'):
-    return [f'v:{version}'] + raw
-
-META_SEPARATOR = '\n---\n'
+META_SEPARATOR = '---'

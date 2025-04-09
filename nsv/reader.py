@@ -30,18 +30,7 @@ class Reader:
         for line in self._file_obj:
             self._line += 1
             if line == '\n':
-                if acc:  # end of row
-                    return acc
-                else:  # maybe empty row
-                    self._line += 1
-                    try:
-                        line = next(self._file_obj)
-                        if line == '\n':  # definitely empty row
-                            return []
-                        else:
-                            raise ValueError(f"Invalid NSV: Unexpected newline at line {self._line}")
-                    except StopIteration:  # empty row at end of file
-                        return []
+                return acc
             if line == '\\\n':  # empty cell
                 acc.append('')
             else:  # non-empty cell
