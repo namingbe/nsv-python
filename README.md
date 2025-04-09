@@ -34,8 +34,8 @@ with open('input.nsv', 'r') as f:
 # Writing NSV data
 with open('output.nsv', 'w') as f:
     writer = nsv.Writer(f)
-    writer.write_elem(['field1', 'field2', 'field3'])
-    writer.write_elem(['value1', 'value2', 'value3'])
+    writer.write_row(['row1cell1', 'row1cell2', 'row1cell3'])
+    writer.write_row(['row2cell1', 'row2cell2', 'row2cell3'])
 ```
 
 ## Running Tests

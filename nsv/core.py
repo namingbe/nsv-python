@@ -18,12 +18,13 @@ def loads(s):
     if version is None:
         raise ValueError("Invalid NSV: Missing version information")
     data = []
-    for row in body.split('\n\n'):
-        acc = []
-        for cell in row.split('\n'):
-            if cell:  # split can leave a trailing empty one
-                acc.append(Reader.unescape(cell))
-        data.append(acc)
+    if body:
+        for row in body.split('\n\n'):
+            acc = []
+            for cell in row.split('\n'):
+                if cell:  # split can leave a trailing empty one
+                    acc.append(Reader.unescape(cell))
+            data.append(acc)
     return metadata, data
 
 def dump(data, file_obj, metadata=None):

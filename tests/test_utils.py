@@ -7,6 +7,7 @@ from io import StringIO
 
 SAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'samples')
 SAMPLES_DATA = {
+    'empty': (["v:1.0"], []),
     'basic': (["v:1.0"], [["r1c1", "r1c2", "r1c3"], ["r2c1", "r2c2", "r2c3"]]),
     'comments': (
         ["v:1.0", "# This is a comment", "// Another comment", "-- And another"], [["r1c1", "r1c2"], ["r2c1", "r2c2"]]),
@@ -29,7 +30,11 @@ SAMPLES_DATA = {
          ["r5c1", "r5c2", "r5c3"],
          []]
     ),
-    'only_empty_sequences': (["v:1.0"], [[], []])
+    'only_empty_sequences': (["v:1.0"], [[], []]),
+    'multiline_encoded': (
+        ["v:1.0"],
+        [["line1\nline2", "r1c2", "r1c3"], ["anotherline1\nline2\nline3", "r2c2"]],
+    )
 }
 
 
