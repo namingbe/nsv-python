@@ -8,7 +8,8 @@ from io import StringIO
 SAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'samples')
 SAMPLES_DATA = {
     'basic': (["v:1.0"], [["r1c1", "r1c2", "r1c3"], ["r2c1", "r2c2", "r2c3"]]),
-    'comments': (["v:1.0", "# This is a comment", "// Another comment" ,"-- And another"], [["r1c1", "r1c2"], ["r2c1", "r2c2"]]),
+    'comments': (
+        ["v:1.0", "# This is a comment", "// Another comment", "-- And another"], [["r1c1", "r1c2"], ["r2c1", "r2c2"]]),
     'empty_fields': (["v:1.0"], [["r1c1", "", "r1c3"], ["r2c1", "", "r2c3"]]),
     'empty_sequence': (["v:1.0"], [["r1c1", "r1c2"], [], ["r3c1", "r3c2"]]),
     'empty_sequence_end': (["v:1.0"], [["r1c1", "r1c2"], ["r2c1", "r2c2"], []]),
@@ -19,6 +20,16 @@ SAMPLES_DATA = {
          ["field\"with\"quotes", "field'with'quotes", "field\\with\\backslashes"],
          ["field\nwith\nnewlines", "field, just field"]]
     ),
+    'multiple_empty_sequences': (
+        ["v:1.0"],
+        [[],
+         ["r2c1", "r2c2"],
+         [],
+         [],
+         ["r5c1", "r5c2", "r5c3"],
+         []]
+    ),
+    'only_empty_sequences': (["v:1.0"], [[], []])
 }
 
 
@@ -43,6 +54,7 @@ def loads_sample(name):
         metadata, data = nsv.loads(f.read())
     return metadata, data
 
+
 def dump_sample(name):
     metadata, data = SAMPLES_DATA[name]
     with tempfile.TemporaryDirectory() as output_dir:
@@ -55,6 +67,7 @@ def dump_sample(name):
         with open(output_path, 'r') as f:
             s = f.read()
     return s
+
 
 def dumps_sample(name):
     metadata, data = SAMPLES_DATA[name]
