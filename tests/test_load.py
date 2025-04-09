@@ -9,14 +9,15 @@ from test_utils import SAMPLES_DIR, SAMPLES_DATA, load_sample, loads_sample
 class TestLoad(unittest.TestCase):
     def test_load(self):
         for name, expected in SAMPLES_DATA.items():
-            actual = load_sample(name)
-            self.assertEqual(expected, actual, msg=name)
+            with self.subTest(sample_name=name):
+                actual = load_sample(name)
+                self.assertEqual(expected, actual)
 
     def test_loads(self):
         for name, expected in SAMPLES_DATA.items():
-            actual = loads_sample(name)
-            self.assertEqual(expected, actual, msg=name)
-
+            with self.subTest(sample_name=name):
+                actual = loads_sample(name)
+                self.assertEqual(expected, actual)
 
     def test_missing_version(self):
         """Test that missing version raises error."""
@@ -37,6 +38,7 @@ class TestLoad(unittest.TestCase):
         with open(file_path, 'r') as f:
             with self.assertRaises(ValueError):
                 nsv.load(f)
+
 
 if __name__ == '__main__':
     unittest.main()
