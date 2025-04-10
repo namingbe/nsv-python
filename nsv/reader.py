@@ -31,12 +31,9 @@ class Reader:
             self._line += 1
             if line == '\n':
                 return acc
-            if line == '\\\n':  # empty cell
-                acc.append('')
-            else:  # non-empty cell
-                if line[-1] == '\n':  # so as not to chop if missing newline at EOF
-                    line = line[:-1]
-                acc.append(Reader.unescape(line))  # bruh
+            if line[-1] == '\n':  # so as not to chop if missing newline at EOF
+                line = line[:-1]
+            acc.append(Reader.unescape(line))  # bruh
         # at the end of file
         if acc:
             return acc
