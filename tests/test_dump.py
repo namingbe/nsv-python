@@ -1,6 +1,8 @@
 import os
 import unittest
+from io import StringIO
 
+import nsv
 from test_utils import SAMPLES_DATA, dump_sample, dumps_sample, SAMPLES_DIR
 
 
@@ -15,13 +17,18 @@ class TestDump(unittest.TestCase):
                 self.assertEqual(expected, actual)
 
     def test_dumps(self):
-        for name, data in SAMPLES_DATA.items():
+        for name in SAMPLES_DATA:
             with self.subTest(name=name):
                 actual = dumps_sample(name)
                 file_path = os.path.join(SAMPLES_DIR, f'{name}.nsv')
                 with open(file_path, 'r') as f:
                     expected = f.read()
                 self.assertEqual(expected, actual)
+
+    def test_parity(self):
+        for name, (meta, data) in SAMPLES_DATA.items():
+            with self.subTest(name=name):
+                self.assertEqual(nsv.dumps(data, meta), nsv.dump(data, StringIO(), meta).getvalue())
 
 
 if __name__ == '__main__':
