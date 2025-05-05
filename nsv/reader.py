@@ -3,7 +3,6 @@ class Reader:
 
     def __init__(self, file_obj):
         self._file_obj = file_obj
-        self.version = None
         self.metadata = []
         self._line = 0  # Solely for error reporting
         self._parse_header()
@@ -13,14 +12,9 @@ class Reader:
             self._line += 1
             if line == Reader.META_SEPARATOR:
                 break
-            if line == 'v:1.0\n':
-                self.version = '1.0'
             self.metadata.append(line[:-1])
         else:
             raise ValueError("Invalid NSV: End of input encountered before end of header")
-
-        if self.version is None:
-            raise ValueError("Invalid NSV: Missing version information")
 
     def __iter__(self):
         return self
@@ -34,7 +28,7 @@ class Reader:
             if line[-1] == '\n':  # so as not to chop if missing newline at EOF
                 line = line[:-1]
             acc.append(Reader.unescape(line))  # bruh
-        # at the end of file
+        # at the end of the file
         if acc:
             return acc
         else:  # an empty row would self-report in the cycle body

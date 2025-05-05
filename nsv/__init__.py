@@ -4,6 +4,9 @@ from .writer import Writer
 
 __version__ = "0.1.0"
 
+FEATURES = {
+    'table': False,
+}
 
 def patch_pandas():
     """Add NSV support to pandas if available in context."""

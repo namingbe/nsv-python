@@ -1,15 +1,12 @@
+from typing import Optional
+
+
 class Writer:
     META_SEPARATOR = '---'
 
-    def __init__(self, file_obj, metadata=None):
+    def __init__(self, file_obj, metadata: Optional[list[str]] = None):
         self._file_obj = file_obj
-        self.metadata = metadata if metadata else ('v:1.0',)
-        for line in self.metadata:
-            if line == 'v:1.0':
-                self.version = '1.0'
-                break
-        else:
-            raise ValueError("Version number not found in metadata")
+        self.metadata = metadata if metadata else ()
         self._write_header()
 
     def _write_header(self):

@@ -8,15 +8,13 @@ def load(file_obj):
 
 def loads(s):
     """Load NSV data from a string."""
-    header, body = s.split(f'\n{META_SEPARATOR}\n', 1)  # will raise ValueError here if no separator
-    version = None
+    if s.startswith('---\n'):  # empty head
+        header, body = '', s[4:]
+    else:
+        header, body = s.split(f'\n{META_SEPARATOR}\n', 1)  # will raise ValueError here if no separator
     metadata = []
     for line in header.split('\n'):
-        if line == 'v:1.0':
-            version = '1.0'
         metadata.append(line)
-    if version is None:
-        raise ValueError("Invalid NSV: Missing version information")
     data = []
     acc = []
     for i, line in enumerate(body.split('\n')[:-1]):
@@ -35,7 +33,7 @@ def dump(data, file_obj, metadata=None):
 
 def dumps(data, metadata=None):
     """Write elements to an NSV string."""
-    lines = [*(metadata or ('v:1.0',)), META_SEPARATOR]
+    lines = [*(metadata or ()), META_SEPARATOR]
     for i, row in enumerate(data):
         for cell in row:
             lines.append(Writer.escape(cell))
