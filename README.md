@@ -48,3 +48,9 @@ python -m unittest
 Must cover
 - `loads(s)` vs `load(StringIO(s))` parity
 - `dumps(data)` vs `dump(data, StringIO()).getvalue()` parity
+
+## Features
+
+- [x] Core parsing
+- [ ] `table`
+

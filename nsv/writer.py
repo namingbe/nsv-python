@@ -16,7 +16,7 @@ class Writer:
 
     def write_row(self, row):
         if row:
-            chunk = ''.join(f'{Writer.escape(str(cell))}\n' if cell else '\\\n' for cell in row)
+            chunk = ''.join(f'{Writer.escape(str(cell))}\n' if str(cell) != '' else '\\\n' for cell in row)
             self._file_obj.write(chunk)
         self._file_obj.write('\n')
 
