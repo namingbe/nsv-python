@@ -13,8 +13,9 @@ def loads(s):
     else:
         header, body = s.split(f'\n{META_SEPARATOR}\n', 1)  # will raise ValueError here if no separator
     metadata = []
-    for line in header.split('\n'):
-        metadata.append(line)
+    if header:
+        for line in header.split('\n'):
+            metadata.append(line)
     data = []
     acc = []
     for i, line in enumerate(body.split('\n')[:-1]):

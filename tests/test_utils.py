@@ -1,31 +1,29 @@
 import os
 import tempfile
-import time
 
 import nsv
-from io import StringIO
 
 SAMPLES_DIR = os.path.join(os.path.dirname(__file__), 'samples')
 SAMPLES_DATA = {
-    'empty': (["v:1.0"], []),
-    'empty_one': (["v:1.0"], [[]]),
-    'empty_two': (["v:1.0"], [[], []]),
-    'empty_three': (["v:1.0"], [[], [], []]),
-    'basic': (["v:1.0"], [["r1c1", "r1c2", "r1c3"], ["r2c1", "r2c2", "r2c3"]]),
+    'empty': ([], []),
+    'empty_one': ([], [[]]),
+    'empty_two': ([], [[], []]),
+    'empty_three': ([], [[], [], []]),
+    'basic': ([], [["r1c1", "r1c2", "r1c3"], ["r2c1", "r2c2", "r2c3"]]),
     'comments': (
-        ["v:1.0", "# This is a comment", "// Another comment", "-- And another"], [["r1c1", "r1c2"], ["r2c1", "r2c2"]]),
-    'empty_fields': (["v:1.0"], [["r1c1", "", "r1c3"], ["r2c1", "", "r2c3"]]),
-    'empty_sequence': (["v:1.0"], [["r1c1", "r1c2"], [], ["r3c1", "r3c2"]]),
-    'empty_sequence_end': (["v:1.0"], [["r1c1", "r1c2"], ["r2c1", "r2c2"], []]),
-    'empty_sequence_start': (["v:1.0"], [[], ["r2c1", "r2c2"], ["r3c1", "r3c2"]]),
+        ["# This is a comment", "// Another comment", "-- And another"], [["r1c1", "r1c2"], ["r2c1", "r2c2"]]),
+    'empty_fields': ([], [["r1c1", "", "r1c3"], ["r2c1", "", "r2c3"]]),
+    'empty_sequence': ([], [["r1c1", "r1c2"], [], ["r3c1", "r3c2"]]),
+    'empty_sequence_end': ([], [["r1c1", "r1c2"], ["r2c1", "r2c2"], []]),
+    'empty_sequence_start': ([], [[], ["r2c1", "r2c2"], ["r3c1", "r3c2"]]),
     'special_chars': (
-        ["v:1.0"],
+        [],
         [["field with spaces", "field,with,commas", "field\twith\ttabs"],
          ["field\"with\"quotes", "field'with'quotes", "field\\with\\backslashes"],
          ["field\nwith\nnewlines", "field, just field"]]
     ),
     'multiple_empty_sequences': (
-        ["v:1.0"],
+        [],
         [[],
          ["r2c1", "r2c2"],
          [],
@@ -34,7 +32,7 @@ SAMPLES_DATA = {
          []]
     ),
     'multiline_encoded': (
-        ["v:1.0"],
+        [],
         [["line1\nline2", "r1c2", "r1c3"], ["anotherline1\nline2\nline3", "r2c2"]],
     )
 }
