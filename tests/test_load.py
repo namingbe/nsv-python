@@ -27,13 +27,6 @@ class TestLoad(unittest.TestCase):
                     s = f.read()
                     self.assertEqual(nsv.loads(s), nsv.load(StringIO(s)))
 
-    def test_missing_separator(self):
-        """Test that missing separator raises error."""
-        file_path = os.path.join(SAMPLES_DIR, 'missing_separator.nsv')
-        with open(file_path, 'r') as f:
-            with self.assertRaises(ValueError):
-                nsv.load(f)
-
 
 if __name__ == '__main__':
     unittest.main()

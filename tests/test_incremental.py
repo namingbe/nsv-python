@@ -36,7 +36,7 @@ class TestIncrementalProcessing(unittest.TestCase):
                     writer.write_row(elem)
 
             with open(output_path, 'r') as f:
-                meta, actual = nsv.load(f)
+                actual = nsv.load(f)
 
             self.assertEqual(data, actual)
 

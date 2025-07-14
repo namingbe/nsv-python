@@ -2,11 +2,9 @@ from .core import load, loads, dump, dumps
 from .reader import Reader
 from .writer import Writer
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
-FEATURES = {
-    'table': False,
-}
+FEATURES = {}
 
 def patch_pandas():
     """Add NSV support to pandas if available in context."""
@@ -18,22 +16,22 @@ def patch_pandas():
     def read_nsv(filepath_or_buffer, **kwargs):
         if isinstance(filepath_or_buffer, str):
             with open(filepath_or_buffer, 'r') as f:
-                _, data = load(f)
+                data = load(f)
         else:
-            _, data = load(filepath_or_buffer)
+            data = load(filepath_or_buffer)
         return pd.DataFrame(data)
 
-    def to_nsv(self, path_or_buf=None, metadata=None, **kwargs):
+    def to_nsv(self, path_or_buf=None, **kwargs):
         # TODO: this is naive, pandas can have non-string values
         data = self.values
 
         if path_or_buf is None:
-            return dumps(data, metadata=metadata)
+            return dumps(data)
         elif isinstance(path_or_buf, str):
             with open(path_or_buf, 'w') as f:
-                dump(data, f, metadata=metadata)
+                dump(data, f)
         else:
-            dump(data, path_or_buf, metadata=metadata)
+            dump(data, path_or_buf)
 
     pd.read_nsv = read_nsv
     pd.DataFrame.to_nsv = to_nsv

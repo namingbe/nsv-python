@@ -11,7 +11,7 @@ class TestEdgeCases(unittest.TestCase):
             ["normal", long_string],
             [long_string, "normal"]
         ]
-        self.assertEqual(data, dump_then_load(data)[1])
+        self.assertEqual(data, dump_then_load(data))
 
     def test_special_characters(self):
         """Test handling of special characters in field values."""

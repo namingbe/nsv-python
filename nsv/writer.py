@@ -1,26 +1,16 @@
-from typing import Optional
-
+from typing import Iterable
 
 class Writer:
-    META_SEPARATOR = '---'
-
-    def __init__(self, file_obj, metadata: Optional[list[str]] = None):
+    def __init__(self, file_obj):
         self._file_obj = file_obj
-        self.metadata = metadata if metadata else ()
-        self._write_header()
 
-    def _write_header(self):
-        for line in self.metadata:
-            self._file_obj.write(f'{line}\n')
-        self._file_obj.write(f'{Writer.META_SEPARATOR}\n')
-
-    def write_row(self, row):
+    def write_row(self, row: Iterable[str]):
         if row:
-            chunk = ''.join(f'{Writer.escape(str(cell))}\n' if str(cell) != '' else '\\\n' for cell in row)
+            chunk = ''.join(f'{Writer.escape(cell)}\n' for cell in row)
             self._file_obj.write(chunk)
         self._file_obj.write('\n')
 
-    def write_rows(self, rows):
+    def write_rows(self, rows: Iterable[Iterable[str]]):
         for row in rows:
             self.write_row(row)
 

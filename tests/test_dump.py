@@ -26,9 +26,9 @@ class TestDump(unittest.TestCase):
                 self.assertEqual(expected, actual)
 
     def test_parity(self):
-        for name, (meta, data) in SAMPLES_DATA.items():
+        for name, data in SAMPLES_DATA.items():
             with self.subTest(name=name):
-                self.assertEqual(nsv.dumps(data, meta), nsv.dump(data, StringIO(), meta).getvalue())
+                self.assertEqual(nsv.dumps(data), nsv.dump(data, StringIO()).getvalue())
 
 
 if __name__ == '__main__':
