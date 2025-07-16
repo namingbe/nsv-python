@@ -18,4 +18,6 @@ class Writer:
     def escape(s):
         if s == '':
             return '\\'
-        return s.replace("\\", "\\\\").replace("\n", "\\n")  # i know
+        if '\n' in s or '\\' in s:
+            return s.replace("\\", "\\\\").replace("\n", "\\n")  # i know
+        return s

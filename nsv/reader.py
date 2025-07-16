@@ -23,4 +23,6 @@ class Reader:
     def unescape(s):
         if s == '\\':
             return ''
-        return s.replace("\\n", "\n").replace("\\\\", "\\")  # i know
+        if '\\' in s:
+            return s.replace("\\n", "\n").replace("\\\\", "\\")  # i know
+        return s
