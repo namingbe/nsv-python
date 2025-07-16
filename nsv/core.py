@@ -11,7 +11,9 @@ def loads(s) -> list[list[str]]:
     acc = []
     if not s:
         return []
-    for i, line in enumerate(s.split('\n')[:-1]):
+    lines = s.split('\n')
+    lines.pop()  # hmm
+    for line in lines:
         if line:
             acc.append(Reader.unescape(line))
         else:
